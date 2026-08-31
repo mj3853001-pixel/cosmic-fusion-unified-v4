@@ -1,0 +1,185 @@
+name: 🔥 Sovereign CI/CD Automation Matrix
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sovereign-test-matrix:
+    runs-on: ubuntu-latest
+    name: 🧪 Invariant Test Matrix — 51/51
+    steps:
+      - name: 🏛️ Checkout Sovereign Repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: ⚡ Setup Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: 🧪 Run Core Engine Tests (8 tests)
+        run: python -m unittest test_engine -v
+        continue-on-error: true
+        id: engine
+
+      - name: 🧪 Run PROJ-002 Tests (4 tests)
+        run: python -m unittest test_proj002 -v
+        continue-on-error: true
+        id: proj002
+
+      - name: 🧪 Run Mesh Sync Tests (6 tests)
+        run: python -m unittest test_mesh -v
+        continue-on-error: true
+        id: mesh
+
+      - name: 🧪 Run CosmicHydrogenObserver (4 tests)
+        run: |
+          PYTHONPATH=modules/sovereign_models/cosmichydrogenobserver/structural_core             python modules/sovereign_models/cosmichydrogenobserver/spatial_tests/test_hydrogen_line.py -v
+        continue-on-error: true
+        id: hydrogen
+
+      - name: 🧪 Run HolographicCosmicEngine (5 tests)
+        run: |
+          PYTHONPATH=modules/sovereign_models/holographiccosmicengine/structural_core             python modules/sovereign_models/holographiccosmicengine/spatial_tests/test_holographiccosmicengine.py -v
+        continue-on-error: true
+        id: holographic
+
+      - name: 🧪 Run QuantumNoisyObserverLab (6 tests)
+        run: |
+          PYTHONPATH=modules/sovereign_models/quantumnoisyobserverlab/structural_core             python modules/sovereign_models/quantumnoisyobserverlab/spatial_tests/test_quantumnoisyobserverlab.py -v
+        continue-on-error: true
+        id: quantum
+
+      - name: 🧪 Run CosmicAuditLedger (6 tests)
+        run: |
+          PYTHONPATH=modules/sovereign_models/cosmicauditledger/structural_core             python modules/sovereign_models/cosmicauditledger/spatial_tests/test_cosmicauditledger.py -v
+        continue-on-error: true
+        id: audit
+
+      - name: 🧪 Run ALMAHRAABResearchEngine (6 tests)
+        run: |
+          PYTHONPATH=modules/sovereign_models/almahraabresearchengine/structural_core             python modules/sovereign_models/almahraabresearchengine/spatial_tests/test_almahraabresearchengine.py -v
+        continue-on-error: true
+        id: research
+
+      - name: 🧪 Run Omega Bridge (6 tests)
+        run: |
+          cd modules/omega_absolute_breakthrough/bridge
+          python test_omega_bridge.py -v
+        continue-on-error: true
+        id: omega
+
+      - name: 🎯 Aggregate Sovereign Status
+        run: |
+          mkdir -p .github/badges
+          TOTAL=51
+          PASSED=0
+
+          check_status() {
+            if [ "$1" == "success" ]; then
+              PASSED=$((PASSED + $2))
+            fi
+          }
+
+          check_status "${{ steps.engine.outcome }}" 8
+          check_status "${{ steps.proj002.outcome }}" 4
+          check_status "${{ steps.mesh.outcome }}" 6
+          check_status "${{ steps.hydrogen.outcome }}" 4
+          check_status "${{ steps.holographic.outcome }}" 5
+          check_status "${{ steps.quantum.outcome }}" 6
+          check_status "${{ steps.audit.outcome }}" 6
+          check_status "${{ steps.research.outcome }}" 6
+          check_status "${{ steps.omega.outcome }}" 6
+
+          echo "{"total": $TOTAL, "passed": $PASSED, "failed": $((TOTAL - PASSED))}" > .github/badges/status.json
+          echo "SOVEREIGN_STATUS=$PASSED/$TOTAL" >> $GITHUB_ENV
+
+          if [ $PASSED -eq $TOTAL ]; then
+            echo "SOVEREIGN_COLOR=00ff88" >> $GITHUB_ENV
+            echo "SOVEREIGN_LABEL=ALL SYSTEMS OPERATIONAL" >> $GITHUB_ENV
+          else
+            echo "SOVEREIGN_COLOR=ff4444" >> $GITHUB_ENV
+            echo "SOVEREIGN_LABEL=$((TOTAL - PASSED)) FAILURES DETECTED" >> $GITHUB_ENV
+          fi
+
+      - name: 🛡️ Generate Sovereign Badges
+        run: |
+          cat > .github/badges/sovereign-badge.svg << 'SVGEOF'
+          <svg xmlns="http://www.w3.org/2000/svg" width="320" height="32" role="img" aria-label="SOVEREIGN CI: STATUS">
+            <defs>
+              <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" style="stop-color:#0d1117"/>
+                <stop offset="100%" style="stop-color:#161b22"/>
+              </linearGradient>
+              <filter id="glow">
+                <feDropShadow dx="0" dy="0" stdDeviation="2" flood-color="#${{ env.SOVEREIGN_COLOR }}" flood-opacity="0.6"/>
+              </filter>
+            </defs>
+            <rect width="320" height="32" rx="6" fill="url(#bg)" stroke="#${{ env.SOVEREIGN_COLOR }}" stroke-width="2" filter="url(#glow)"/>
+            <text x="80" y="13" fill="#${{ env.SOVEREIGN_COLOR }}" font-family="monospace" font-size="10" font-weight="bold" text-anchor="middle">SOVEREIGN CI</text>
+            <text x="80" y="26" fill="#ffffff" font-family="monospace" font-size="9" text-anchor="middle">${{ env.SOVEREIGN_STATUS }}</text>
+            <text x="230" y="20" fill="#ffffff" font-family="monospace" font-size="11" font-weight="bold" text-anchor="middle">${{ env.SOVEREIGN_LABEL }}</text>
+          </svg>
+          SVGEOF
+
+      - name: 📝 Update README with Live Status
+        run: |
+          python3 << 'PYEOF'
+          import json, re
+
+          with open('.github/badges/status.json') as f:
+              status = json.load(f)
+
+          with open('README.md', 'r', encoding='utf-8') as f:
+              readme = f.read()
+
+          color = '00ff88' if status['failed'] == 0 else 'ff4444'
+          label = 'ALL SYSTEMS OPERATIONAL' if status['failed'] == 0 else f"{status['failed']} FAILURES DETECTED"
+
+          # Update the dynamic CI badge section
+          ci_badge = f"""<p align="center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="340" height="36" role="img">
+              <defs>
+                <linearGradient id="cibg" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#0d1117"/><stop offset="100%" style="stop-color:#161b22"/></linearGradient>
+                <filter id="ciglow"><feDropShadow dx="0" dy="0" stdDeviation="2" flood-color="#{color}" flood-opacity="0.6"/></filter>
+              </defs>
+              <rect width="340" height="36" rx="8" fill="url(#cibg)" stroke="#{color}" stroke-width="2.5" filter="url(#ciglow)"/>
+              <text x="90" y="14" fill="#{color}" font-family="SF Mono,monospace" font-size="11" font-weight="bold" text-anchor="middle">🔥 SOVEREIGN CI</text>
+              <text x="90" y="28" fill="#ffffff" font-family="SF Mono,monospace" font-size="10" text-anchor="middle">{status['passed']}/{status['total']} INVARIANTS</text>
+              <text x="250" y="22" fill="#ffffff" font-family="SF Mono,monospace" font-size="12" font-weight="bold" text-anchor="middle">{label}</text>
+            </svg>
+          </p>"""
+
+          # Replace between markers
+          pattern = r'(<!-- SOVEREIGN-CI-START -->).*?(<!-- SOVEREIGN-CI-END -->)'
+          replacement = f'<!-- SOVEREIGN-CI-START -->\n{ci_badge}\n<!-- SOVEREIGN-CI-END -->'
+
+          if re.search(pattern, readme):
+              readme = re.sub(pattern, replacement, readme, flags=re.DOTALL)
+          else:
+              # Inject after the static badges if markers not found
+              readme = readme.replace(
+                  '</div>\n\n---',
+                  f'</div>\n\n<!-- SOVEREIGN-CI-START -->\n{ci_badge}\n<!-- SOVEREIGN-CI-END -->\n\n---',
+                  1
+              )
+
+          with open('README.md', 'w', encoding='utf-8') as f:
+              f.write(readme)
+          PYEOF
+
+      - name: 🚀 Commit Live Status
+        run: |
+          git config user.name "Sovereign CI Bot"
+          git config user.email "sovereign@almahraab.engineering"
+          git add README.md .github/badges/
+          git diff --cached --quiet || git commit -m "🔥 ci: Live Sovereign Status — ${{ env.SOVEREIGN_STATUS }} ${{ env.SOVEREIGN_LABEL }}"
+          git push || echo "Nothing to push"

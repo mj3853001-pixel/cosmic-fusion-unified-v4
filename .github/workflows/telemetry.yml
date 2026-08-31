@@ -1,0 +1,37 @@
+name: 📡 Live Mesh Network Telemetry
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'  # Every 5 minutes
+  workflow_dispatch:
+  push:
+    branches: [main, master]
+
+permissions:
+  contents: write
+
+jobs:
+  telemetry-update:
+    runs-on: ubuntu-latest
+    name: 🌐 Mesh Telemetry Generator
+    steps:
+      - name: 🏛️ Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: ⚡ Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: 🎯 Generate Live Telemetry SVG
+        run: python3 .github/scripts/generate_telemetry.py
+
+      - name: 🚀 Commit Telemetry
+        run: |
+          git config user.name "Sovereign Telemetry Bot"
+          git config user.email "telemetry@almahraab.engineering"
+          git add README.md .github/badges/telemetry.svg
+          git diff --cached --quiet || git commit -m "📡 telemetry: Live Mesh Update — $(date -u '+%H:%M UTC')"
+          git push || echo "No changes"
