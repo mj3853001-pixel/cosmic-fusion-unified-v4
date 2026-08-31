@@ -488,6 +488,21 @@ cosmic-fusion-unified-v4/
 
 ---
 
+<!-- TELEMETRY-START -->
+<div align="center">
+
+## 📡 Live Mesh Network Telemetry
+
+<p align="center">
+  <img src=".github/badges/telemetry.svg" alt="Live Mesh Telemetry" width="720"/>
+</p>
+
+> *Real-time sovereign mesh consensus visualization. Updates every 5 minutes via GitHub Actions.*
+> *No external APIs. No cloud services. Pure LAN consensus over UDP:9090.*
+
+</div>
+<!-- TELEMETRY-END -->
+
 ## 🔮 Future Roadmap
 
 ## 🚀 Warp Drive Verified
