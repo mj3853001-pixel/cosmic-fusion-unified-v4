@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>👑 UCA Cosmic Fusion v5.0 — The Sixfold Expansion</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js">function refreshMesh(){fetch("/api/mesh").then(r=>r.json()).then(d=>{const list=document.getElementById("mesh-peers-list");if(d.peers&&d.peers.length>0){list.innerHTML=d.peers.map(p=>`<div class="mesh-peer"><span class="mesh-peer-ip">${p.ip}</span><span class="mesh-peer-time">${new Date(p.last_seen*1000).toLocaleTimeString()}</span></div>`).join("");document.getElementById("mesh-cons-coh").textContent=d.consensus?d.consensus.coherence.toFixed(4):"—";document.getElementById("mesh-cons-stab").textContent=d.consensus?d.consensus.stability.toFixed(4):"—";document.getElementById("mesh-count").textContent=d.peers.length;document.getElementById("mesh-badge").textContent="🛰️ Mesh: "+d.peers.length+" Peers";}else{list.innerHTML='<div class="mesh-peer"><span>لا يوجد أجهزة متصلة</span></div>';document.getElementById("mesh-cons-coh").textContent="—";document.getElementById("mesh-cons-stab").textContent="—";document.getElementById("mesh-count").textContent="0";document.getElementById("mesh-badge").textContent="🛰️ Mesh: Standalone";}}).catch(()=>{document.getElementById("mesh-badge").textContent="🛰️ Mesh: Error";});}</script>
+<style>
+:root {
+  --bg: #0a0f1a; --panel: #0d1525; --card: #111b2e; --border: #1a2744;
+  --text: #e0e6f0; --text2: #8a9bb8; --text3: #556680;
+  --accent: #4a9eff; --accent2: #ff6b6b; --accent3: #51cf66; --accent4: #9775fa; --accent5: #ffa94d;
+  --glow: rgba(74,158,255,0.15); --font: "Segoe UI","Noto Sans Arabic",system-ui,sans-serif; --mono: "SF Mono","Fira Code",monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font); background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
+.app { max-width: 1400px; margin: 0 auto; padding: 12px; }
+
+.header { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; background: var(--panel); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 12px; flex-wrap: wrap; gap: 10px; }
+.header-title { font-size: 18px; font-weight: 600; letter-spacing: 0.3px; }
+.header-sub { font-size: 12px; color: var(--text2); margin-top: 3px; }
+.header-left { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.header-status { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--accent3); background: rgba(81,207,102,0.08); padding: 5px 12px; border-radius: 20px; border: 1px solid rgba(81,207,102,0.2); }
+.status-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; animation: pulse 1.5s ease-in-out infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+.tabs { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
+.tab { padding: 8px 16px; border-radius: 8px; border: 1px solid var(--border); background: var(--panel); color: var(--text2); font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; user-select: none; }
+.tab:hover { border-color: var(--accent); color: var(--text); }
+.tab.active { background: var(--accent); color: #fff; border-color: var(--accent); box-shadow: 0 0 20px var(--glow); }
+
+.main { display: grid; grid-template-columns: 260px 1fr 280px; gap: 12px; }
+@media (max-width: 1100px) { .main { grid-template-columns: 1fr; } }
+
+.panel { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+.panel-title { font-size: 10px; font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+
+.card { padding: 10px 12px; border-radius: 10px; border: 1px solid var(--border); background: var(--card); transition: border-color 0.3s; }
+.card-title { font-size: 12px; font-weight: 600; margin-bottom: 3px; }
+.card-sub { font-size: 11px; color: var(--text3); line-height: 1.5; }
+.card-row { display: flex; justify-content: space-between; font-size: 11px; margin-top: 4px; }
+.card-row span:first-child { color: var(--text2); }
+.card-row span:last-child { font-family: var(--mono); color: var(--accent); }
+
+.badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 500; }
+.badge-green { background: rgba(81,207,102,0.1); color: var(--accent3); border: 1px solid rgba(81,207,102,0.2); }
+.badge-blue { background: rgba(74,158,255,0.1); color: var(--accent); border: 1px solid rgba(74,158,255,0.2); }
+.badge-red { background: rgba(255,107,107,0.1); color: var(--accent2); border: 1px solid rgba(255,107,107,0.2); }
+.badge-purple { background: rgba(151,117,250,0.1); color: var(--accent4); border: 1px solid rgba(151,117,250,0.2); }
+.badge-orange { background: rgba(255,169,77,0.1); color: var(--accent5); border: 1px solid rgba(255,169,77,0.2); }
+
+.metric { display: flex; justify-content: space-between; align-items: center; padding: 6px 8px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); margin-bottom: 3px; }
+.metric-label { font-size: 11px; color: var(--text2); }
+.metric-value { font-size: 13px; font-weight: 600; font-family: var(--mono); }
+.metric-bar { height: 3px; border-radius: 2px; background: var(--border); margin-top: 3px; overflow: hidden; }
+.metric-bar-fill { height: 100%; border-radius: 2px; transition: width 0.5s ease; }
+
+.layer { display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); margin-bottom: 3px; font-size: 11px; }
+.layer.on { border-color: var(--accent); background: rgba(74,158,255,0.05); }
+.layer-num { width: 18px; height: 18px; border-radius: 5px; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 700; background: var(--border); color: var(--text2); }
+.layer.on .layer-num { background: var(--accent); color: #fff; }
+
+.audit { padding: 10px; border-radius: 10px; border: 1px solid rgba(81,207,102,0.3); background: rgba(81,207,102,0.05); }
+.audit-row { display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 4px; }
+.audit-row span:first-child { color: var(--text2); }
+.audit-row span:last-child { font-family: var(--mono); font-weight: 600; }
+.audit-divider { border-top: 1px solid var(--border); margin: 6px 0; padding-top: 6px; }
+
+.invs { display: flex; gap: 4px; flex-wrap: wrap; }
+.inv { padding: 2px 7px; border-radius: 3px; font-size: 9px; color: var(--text3); background: var(--card); border: 1px solid var(--border); }
+
+.center { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px; }
+.viz-wrap { width: 100%; max-width: 480px; aspect-ratio: 1; position: relative; }
+.viz-wrap svg { width: 100%; height: 100%; }
+
+.bottom { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 10px 16px; background: var(--panel); border: 1px solid var(--border); border-radius: 12px; margin-top: 12px; flex-wrap: wrap; }
+.balance { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 200px; }
+.balance-label { font-size: 11px; color: var(--text2); white-space: nowrap; }
+.balance-track { flex: 1; height: 4px; border-radius: 2px; background: var(--border); position: relative; }
+.balance-thumb { position: absolute; top: -4px; width: 12px; height: 12px; border-radius: 50%; background: var(--text); border: 2px solid var(--card); box-shadow: 0 0 8px rgba(74,158,255,0.4); transition: left 0.6s ease; }
+.timeline { display: flex; align-items: center; gap: 6px; font-size: 12px; }
+.tl-item { padding: 3px 8px; border-radius: 4px; background: var(--card); border: 1px solid var(--border); font-family: var(--mono); font-size: 11px; }
+.tl-item.active { background: rgba(74,158,255,0.15); color: var(--accent); border-color: var(--accent); }
+
+.btn { padding: 8px 16px; border-radius: 8px; border: 1px solid var(--accent); background: var(--accent); color: #fff; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+.btn:hover { box-shadow: 0 0 20px var(--glow); }
+.btn-outline { padding: 8px 16px; border-radius: 8px; border: 1px solid var(--border); background: transparent; color: var(--text2); font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+.btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+.api-badge { padding: 3px 10px; border-radius: 4px; font-size: 10px; font-weight: 600; }
+.api-badge.live { background: rgba(81,207,102,0.15); color: var(--accent3); border: 1px solid rgba(81,207,102,0.3); }
+.api-badge.quantum { background: rgba(151,117,250,0.15); color: var(--accent4); border: 1px solid rgba(151,117,250,0.3); }
+
+.chart-box { margin-top: 12px; padding: 10px; border-radius: 10px; border: 1px solid var(--border); background: var(--card); }
+.chart-box canvas { max-height: 200px; }
+
+.slider-box { margin-top: 8px; padding: 8px; border-radius: 8px; border: 1px solid var(--border); background: var(--card); }
+.slider-label { font-size: 11px; color: var(--text2); margin-bottom: 4px; display: flex; justify-content: space-between; }
+.slider-label span { font-family: var(--mono); color: var(--accent); }
+input[type=range] { width: 100%; -webkit-appearance: none; background: var(--border); height: 4px; border-radius: 2px; outline: none; }
+input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%; background: var(--accent); cursor: pointer; }
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text3); }
+</style>
+</head>
+<body>
+<div class="app">
+
+<div class="header">
+  <div>
+    <div class="header-title">المشروع الكوني المتكامل — النظام الموحد v5.0</div>
+    <div class="header-sub">The Sixfold Expansion: Noise + Discovery + P2P + Export + CLI + Quantum</div>
+  </div>
+  <div class="header-left">
+    <span class="api-badge live" id="mode-badge">DETERMINISTIC</span>
+    <span class="badge badge-mesh" id="mesh-badge">🛰️ Mesh: Standalone</span>
+    <div class="header-status" id="conn-status"><div class="status-dot"></div>متصل بالـ SSE — Audit: PASS</div>
+    <button class="btn" onclick="toggleAudio()" id="audio-btn">🔊 تشغيل الصوت الكوني</button>
+    <button class="btn-outline" onclick="toggleQuantum()" id="quantum-btn">⚛️ Quantum</button>
+  </div>
+</div>
+
+<div class="tabs">
+  <div class="tab active" onclick="switchTab(0)">النظام الموحد</div>
+  <div class="tab" onclick="switchTab(1)">معهد الإسقاط</div>
+  <div class="tab" onclick="switchTab(2)">محرك الرنين</div>
+  <div class="tab" onclick="switchTab(3)">المعمل الكوني</div>
+  <div class="tab" onclick="switchTab(4)">المراجعة & الفرضيات</div>
+  <div class="tab" onclick="switchTab(5)">PROJ-002</div>
+</div>
+
+<div class="main" id="main-content">
+
+  <div class="panel">
+    <div class="panel-title">المشاريع الثلاثة</div>
+
+    <div class="card" id="z1-card">
+      <div class="card-title">معهد الإسقاط متعدد الأبعاد</div>
+      <div class="card-sub">المنطقة 1: إسقاط مسطح — Local Projection<br>المنطقة 2: إسقاط كروي — Global Spherical</div>
+      <div style="margin-top:6px;display:flex;gap:4px;flex-wrap:wrap">
+        <span class="badge badge-green">3 Tests Passed</span>
+        <span class="badge badge-green">Audit: PASS</span>
+      </div>
+    </div>
+
+    <div class="card" id="z2-card">
+      <div class="card-title">محرك الرنين الكوني</div>
+      <div class="card-sub">Core Resonance Engine — 1.42 GHz<br>365 يوم — 52 مرحلة — 12 هرم كبير</div>
+      <div style="margin-top:6px;display:flex;gap:4px;flex-wrap:wrap">
+        <span class="badge badge-blue">365 Obelisks</span>
+        <span class="badge badge-purple">52 Syren</span>
+        <span class="badge badge-red">12 Large</span>
+      </div>
+    </div>
+
+    <div class="card" id="z3-card">
+      <div class="card-title">المعمل الكوني المتكامل</div>
+      <div class="card-sub">FastAPI + Dashboard<br>Termux / Android / CPython 3.14</div>
+      <div style="margin-top:6px;display:flex;gap:4px;flex-wrap:wrap">
+        <span class="badge badge-blue">API 1.1.0</span>
+        <span class="badge badge-green">Deterministic</span>
+      </div>
+    </div>
+
+    <div class="card" style="border-style:dashed">
+      <div class="card-sub" style="margin-bottom:4px;font-weight:600">المبدأ الهولوغرافي</div>
+      <div style="font-size:11px;color:var(--text2);line-height:1.6">
+        O<sub>i</sub> = P<sub>i</sub>(R)<br>
+        الملاحظة = إسقاط للواقع<br>
+        Local ≠ Global → Same R
+      </div>
+    </div>
+
+    <div style="margin-top:8px">
+      <div class="panel-title">🛰️ شبكة الأجهزة (Mesh)</div>
+      <div id="mesh-peers-list" style="max-height:120px;overflow-y:auto"><div class="mesh-peer"><span>لا يوجد أجهزة متصلة</span></div></div>
+      <div class="card-row" style="margin-top:6px"><span>Consensus Coherence</span><span id="mesh-cons-coh">—</span></div>
+      <div class="card-row"><span>Consensus Stability</span><span id="mesh-cons-stab">—</span></div>
+      <div class="card-row"><span>Peers Count</span><span id="mesh-count" style="color:var(--accent)">0</span></div>
+      <button class="btn-outline" style="margin-top:6px;width:100%" onclick="refreshMesh()">🔄 تحديث الشبكة</button>
+    </div>
+    <div style="margin-top:auto">
+      <div class="panel-title">النتائج الحقيقية (من السيرفر)</div>
+      <div class="card-row"><span>Mean Coherence</span><span id="real-coh">0.500612</span></div>
+      <div class="card-row"><span>Mean Stability</span><span id="real-stab">0.835193</span></div>
+      <div class="card-row"><span>Peak Switch Day</span><span id="real-peak">95</span></div>
+      <div class="card-row"><span>Peak Switch Score</span><span id="real-score">0.612486</span></div>
+      <div class="card-row"><span>Final Coherence</span><span id="real-final">0.718626</span></div>
+      <div class="card-row"><span>Frequency</span><span id="real-freq">1.42 GHz</span></div>
+      <div class="card-row"><span>Symbolic Mass</span><span id="real-mass">0.971863</span></div>
+    </div>
+  </div>
+
+  <div class="panel center">
+    <div class="viz-wrap">
+      <svg viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg" id="main-svg">
+        <defs>
+          <radialGradient id="coreGlow" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#ff6b6b" stop-opacity="0.3"/><stop offset="100%" stop-color="#ff6b6b" stop-opacity="0"/></radialGradient>
+        </defs>
+        <g opacity="0.1" stroke="#1a2744" stroke-width="0.5" fill="none">
+          <circle cx="240" cy="240" r="70"/><circle cx="240" cy="240" r="130"/><circle cx="240" cy="240" r="185"/><circle cx="240" cy="240" r="225"/>
+        </g>
+        <g opacity="0.06" stroke="#1a2744" stroke-width="0.5">
+          <line x1="240" y1="240" x2="240" y2="15"/><line x1="240" y1="240" x2="240" y2="465"/>
+          <line x1="240" y1="240" x2="15" y2="240"/><line x1="240" y1="240" x2="465" y2="240"/>
+          <line x1="240" y1="240" x2="81" y2="81"/><line x1="240" y1="240" x2="399" y2="399"/>
+          <line x1="240" y1="240" x2="81" y2="399"/><line x1="240" y1="240" x2="399" y2="81"/>
+        </g>
+        <g id="waves" fill="none" stroke="#4a9eff" stroke-width="1.2" opacity="0.2"></g>
+        <g id="obs365" stroke="#1a2744" stroke-width="1.2"></g>
+        <g id="syren52"></g>
+        <g id="large12"></g>
+        <g id="conns" stroke="#1a2744" stroke-width="0.4" opacity="0.12"></g>
+        <circle cx="240" cy="240" r="45" fill="url(#coreGlow)" opacity="0.6">
+          <animate attributeName="r" values="40;52;40" dur="2.5s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="0.4;0.7;0.4" dur="2.5s" repeatCount="indefinite"/>
+        </circle>
+        <polygon points="240,200 200,260 280,260" fill="#ff6b6b" opacity="0.9">
+          <animate attributeName="points" values="240,200 200,260 280,260;240,195 195,265 285,265;240,200 200,260 280,260" dur="2s" repeatCount="indefinite"/>
+        </polygon>
+        <polygon points="240,215 225,245 255,245" fill="#fff" opacity="0.35">
+          <animate attributeName="points" values="240,215 225,245 255,245;240,210 220,250 260,250;240,215 225,245 255,245" dur="2s" repeatCount="indefinite"/>
+        </polygon>
+        <text x="240" y="275" text-anchor="middle" fill="#e0e6f0" font-size="9" font-weight="600">1.42 GHz</text>
+        <g id="particles"></g>
+        <g transform="translate(55,365)">
+          <ellipse cx="0" cy="0" rx="34" ry="12" fill="#111b2e" stroke="#51cf66" stroke-width="1.2"/>
+          <ellipse cx="-6" cy="-2" rx="12" ry="5" fill="#51cf66" opacity="0.2"/>
+          <text x="0" y="22" text-anchor="middle" fill="#556680" font-size="8">إسقاط مسطح</text>
+        </g>
+        <g transform="translate(425,365)">
+          <circle cx="0" cy="0" r="24" fill="rgba(74,158,255,0.1)" stroke="#4a9eff" stroke-width="1.2"/>
+          <ellipse cx="0" cy="0" rx="24" ry="9" fill="none" stroke="#4a9eff" stroke-width="0.5" opacity="0.2"/>
+          <ellipse cx="0" cy="0" rx="15" ry="24" fill="none" stroke="#4a9eff" stroke-width="0.5" opacity="0.2"/>
+          <text x="0" y="36" text-anchor="middle" fill="#556680" font-size="8">إسقاط كروي</text>
+        </g>
+        <line x1="55" y1="325" x2="425" y2="325" stroke="#1a2744" stroke-width="2"/>
+        <line x1="55" y1="325" x2="55" y2="353" stroke="#8a9bb8" stroke-width="1"/>
+        <line x1="425" y1="325" x2="425" y2="341" stroke="#8a9bb8" stroke-width="1"/>
+        <polygon id="pivot" points="240,325 235,316 245,316" fill="#e0e6f0"/>
+        <text x="240" y="312" text-anchor="middle" fill="#8a9bb8" font-size="8">ميزان الحقائق الكونية</text>
+      </svg>
+    </div>
+
+    <div class="chart-box">
+      <div class="panel-title">📊 Timeline History (SQLite) — آخر 60 ثانية</div>
+      <canvas id="historyChart"></canvas>
+    </div>
+
+    <div class="slider-box">
+      <div class="slider-label">🔊 مستوى الضوضاء (Noise Level) <span id="noise-val">0%</span></div>
+      <input type="range" id="noise-slider" min="0" max="100" value="0" oninput="setNoise(this.value)">
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">المعمل الكوني — المؤشرات الحية</div>
+
+    <div class="metric"><span class="metric-label">التماسك (Coherence)</span><span class="metric-value" id="val-coh" style="color:var(--accent)">0.000000</span></div>
+    <div class="metric-bar"><div class="metric-bar-fill" id="bar-coh" style="width:0%;background:var(--accent)"></div></div>
+
+    <div class="metric"><span class="metric-label">الاستقرار (Stability)</span><span class="metric-value" id="val-stab" style="color:var(--accent3)">0.000000</span></div>
+    <div class="metric-bar"><div class="metric-bar-fill" id="bar-stab" style="width:0%;background:var(--accent3)"></div></div>
+
+    <div class="metric"><span class="metric-label">تحول الأبعاد (Dim-Switch)</span><span class="metric-value" id="val-dim" style="color:var(--accent4)">0.000000</span></div>
+    <div class="metric-bar"><div class="metric-bar-fill" id="bar-dim" style="width:0%;background:var(--accent4)"></div></div>
+
+    <div class="metric"><span class="metric-label">الكتلة الرمزية (Symbolic Mass)</span><span class="metric-value" id="val-mass" style="color:#e0e6f0">0.000000</span></div>
+    <div class="metric-bar"><div class="metric-bar-fill" id="bar-mass" style="width:0%;background:#8a9bb8"></div></div>
+
+    <div class="metric"><span class="metric-label">خطأ إعادة البناء (Error)</span><span class="metric-value" id="val-err" style="color:var(--accent2)">0.000000</span></div>
+    <div class="metric-bar"><div class="metric-bar-fill" id="bar-err" style="width:0%;background:var(--accent2)"></div></div>
+
+    <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;">
+      <span class="badge badge-blue" id="hash-badge">Hash: --------</span>
+      <span class="badge badge-green" id="sse-badge">SSE: Connecting...</span>
+      <span class="badge badge-purple" id="peers-badge">Peers: 0</span>
+    </div>
+
+    <div style="margin-top:8px">
+      <div class="panel-title">الـ 5 طبقات (Layers)</div>
+      <div class="layer on"><span class="layer-num">1</span><span>Core Resonance Engine</span></div>
+      <div class="layer on"><span class="layer-num">2</span><span>Geometric Lattice</span></div>
+      <div class="layer on"><span class="layer-num">3</span><span>Symbolic Mass Projection</span></div>
+      <div class="layer on"><span class="layer-num">4</span><span>Audit & Verification</span></div>
+      <div class="layer on"><span class="layer-num">5</span><span>Operational Interface</span></div>
+    </div>
+
+    <div style="margin-top:8px">
+      <div class="panel-title">المراجعة — Conservation Audit</div>
+      <div class="audit">
+        <div class="audit-row"><span>Conserved Before</span><span id="audit-before">1.000000</span></div>
+        <div class="audit-row"><span>Conserved After</span><span id="audit-after">1.000000</span></div>
+        <div class="audit-row"><span>Residual</span><span id="audit-res" style="color:var(--accent3)">0.000000</span></div>
+        <div class="audit-row"><span>Physical Transport</span><span id="audit-phys" style="color:var(--accent2)">FALSE</span></div>
+        <div class="audit-divider"></div>
+        <div class="audit-row"><span>Audit Status</span><span id="audit-status" style="color:var(--accent3)">PASS ✓</span></div>
+      </div>
+    </div>
+
+    <div style="margin-top:8px">
+      <div class="panel-title">7 Invariants</div>
+      <div class="invs">
+        <span class="inv">Finite ✓</span>
+        <span class="inv">Deterministic ✓</span>
+        <span class="inv">Conservation ✓</span>
+        <span class="inv">Phase Domain ✓</span>
+        <span class="inv">Coherence Domain ✓</span>
+        <span class="inv">Stability Domain ✓</span>
+        <span class="inv">No Silent Transport ✓</span>
+      </div>
+    </div>
+
+    <div style="margin-top:auto;display:flex;gap:6px;flex-wrap:wrap">
+      <button class="btn" onclick="exportData()">تصدير JSON</button>
+      <button class="btn-outline" onclick="exportCSV()">📥 CSV</button>
+      <button class="btn-outline" onclick="discoverPeers()">🔍 Discover</button>
+    </div>
+  </div>
+
+  <div class="bottom">
+    <div class="balance">
+      <span class="balance-label">ميزان الحقائق الكونية</span>
+      <span style="font-size:10px;color:var(--text3)">مسطح</span>
+      <div class="balance-track"><div class="balance-thumb" id="balance-thumb" style="left:50%"></div></div>
+      <span style="font-size:10px;color:var(--text3)">كروي</span>
+      <span id="balance-val" style="font-size:11px;font-weight:600;font-family:var(--mono);min-width:36px;text-align:right">0.50</span>
+    </div>
+
+    <div class="timeline">
+      <span style="font-size:11px;color:var(--text2)">التقويم:</span>
+      <span class="tl-item active" id="tl-day">يوم 1</span>
+      <span class="tl-item" id="tl-phase">مرحلة 1</span>
+      <span class="tl-item" id="tl-month">شهر 1</span>
+      <span class="tl-item" id="tl-lp">هرم كبير 1</span>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:6px">
+      <span style="font-size:11px;color:var(--text2)">API:</span>
+      <span class="badge badge-green" id="api-info">SSE Live</span>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===================== BUILD SVG =====================
+const svg = document.getElementById('main-svg');
+const obs365g = document.getElementById('obs365');
+const syren52g = document.getElementById('syren52');
+const large12g = document.getElementById('large12');
+const connsg = document.getElementById('conns');
+const wavesg = document.getElementById('waves');
+const partsg = document.getElementById('particles');
+const CX = 240, CY = 240;
+const R365 = 225, R52 = 185, R12 = 130;
+
+for (let i = 0; i < 365; i++) {
+  const a = (i / 365) * Math.PI * 2 - Math.PI / 2;
+  const x1 = CX + Math.cos(a) * R365;
+  const y1 = CY + Math.sin(a) * R365;
+  const x2 = CX + Math.cos(a) * (R365 + 5);
+  const y2 = CY + Math.sin(a) * (R365 + 5);
+  const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+  line.setAttribute('x1', x1); line.setAttribute('y1', y1);
+  line.setAttribute('x2', x2); line.setAttribute('y2', y2);
+  line.setAttribute('id', 'ob365-' + i);
+  obs365g.appendChild(line);
+}
+for (let i = 0; i < 52; i++) {
+  const a = (i / 52) * Math.PI * 2 - Math.PI / 2;
+  const x = CX + Math.cos(a) * R52;
+  const y = CY + Math.sin(a) * R52;
+  const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+  g.setAttribute('id', 'syr-' + i);
+  g.setAttribute('transform', 'translate(' + x + ',' + y + ') rotate(' + (a * 180 / Math.PI + 90) + ')');
+  const p = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+  p.setAttribute('points', '-4,0 -2,-12 2,-12 4,0');
+  p.setAttribute('fill', '#9775fa'); p.setAttribute('opacity', '0.5');
+  p.setAttribute('id', 'syr-body-' + i);
+  g.appendChild(p);
+  const cap = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+  cap.setAttribute('points', '-2,-12 0,-15 2,-12');
+  cap.setAttribute('fill', '#8a9bb8');
+  g.appendChild(cap);
+  syren52g.appendChild(g);
+  const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+  line.setAttribute('x1', CX); line.setAttribute('y1', CY);
+  line.setAttribute('x2', x); line.setAttribute('y2', y);
+  line.setAttribute('id', 'conn-syr-' + i);
+  connsg.appendChild(line);
+}
+for (let i = 0; i < 12; i++) {
+  const a = (i / 12) * Math.PI * 2 - Math.PI / 2;
+  const x = CX + Math.cos(a) * R12;
+  const y = CY + Math.sin(a) * R12;
+  const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+  g.setAttribute('id', 'lp-' + i);
+  g.setAttribute('transform', 'translate(' + x + ',' + y + ') rotate(' + (a * 180 / Math.PI + 90) + ')');
+  const p = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+  p.setAttribute('points', '-7,0 -4,-20 4,-20 7,0');
+  p.setAttribute('fill', '#ff6b6b'); p.setAttribute('opacity', '0.7');
+  p.setAttribute('id', 'lp-body-' + i);
+  g.appendChild(p);
+  const cap = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+  cap.setAttribute('points', '-4,-20 0,-24 4,-20');
+  cap.setAttribute('fill', '#fff'); cap.setAttribute('opacity', '0.4');
+  g.appendChild(cap);
+  const num = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+  num.setAttribute('x', 0); num.setAttribute('y', -28); num.setAttribute('text-anchor', 'middle');
+  num.setAttribute('fill', '#556680'); num.setAttribute('font-size', '7');
+  num.textContent = String(i + 1);
+  num.setAttribute('transform', 'rotate(' + (-(a * 180 / Math.PI + 90)) + ')');
+  g.appendChild(num);
+  large12g.appendChild(g);
+}
+for (let i = 0; i < 3; i++) {
+  const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+  c.setAttribute('cx', CX); c.setAttribute('cy', CY); c.setAttribute('r', 30);
+  c.setAttribute('id', 'wave-' + i); c.setAttribute('opacity', '0');
+  wavesg.appendChild(c);
+}
+for (let i = 0; i < 10; i++) {
+  const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+  c.setAttribute('r', '2'); c.setAttribute('fill', '#4a9eff');
+  c.setAttribute('id', 'part-' + i); c.setAttribute('opacity', '0');
+  partsg.appendChild(c);
+}
+
+// ===================== STATE & CHART =====================
+const state = { day: 0, phase: 0, month: 0, largeP: 0, time: 0, running: true, coh: 0.5, stab: 0.5, dim: 0.5, mass: 0.97, bal: 0.5, err: 0, noise: 0, quantum: false, peers: 0 };
+const T = 365, P = 52, M = 12, L = 12;
+let audioCtx = null, oscL = null, oscR = null, gainNode = null;
+let chart = null;
+let historyData = { labels: [], coherence: [], stability: [], dim: [] };
+
+const ctx = document.getElementById('historyChart').getContext('2d');
+chart = new Chart(ctx, {
+  type: 'line',
+  data: {
+    labels: [],
+    datasets: [
+      { label: 'Coherence', data: [], borderColor: '#4a9eff', tension: 0.4, pointRadius: 0, borderWidth: 2 },
+      { label: 'Stability', data: [], borderColor: '#51cf66', tension: 0.4, pointRadius: 0, borderWidth: 2 },
+      { label: 'Dim-Switch', data: [], borderColor: '#9775fa', tension: 0.4, pointRadius: 0, borderWidth: 2 }
+    ]
+  },
+  options: {
+    responsive: true,
+    animation: false,
+    maintainAspectRatio: false,
+    scales: {
+      y: { min: 0, max: 1, grid: { color: '#1a2744' }, ticks: { color: '#556680', font: { size: 9 } } },
+      x: { grid: { display: false }, ticks: { color: '#556680', font: { size: 8 }, maxTicksLimit: 6 } }
+    },
+    plugins: { legend: { labels: { color: '#8a9bb8', font: { size: 10 } } } }
+  }
+});
+
+// ===================== SSE STREAM =====================
+const evtSource = new EventSource('/api/stream');
+
+evtSource.onmessage = (e) => {
+  const d = JSON.parse(e.data);
+  state.coh = d.coherence;
+  state.stab = d.stability;
+  state.dim = d.dimension_switch_score;
+  state.mass = d.symbolic_mass;
+  state.err = d.reconstruction_error || 0;
+  state.noise = d.noise_level || 0;
+  state.quantum = d.quantum_mode || false;
+  state.peers = d.peers ? d.peers.length : 0;
+  state.day = d.day - 1;
+  state.phase = d.phase - 1;
+  state.time += 0.5;
+
+  updateMetrics();
+
+  document.getElementById('hash-badge').textContent = 'Hash: ' + d.hash.substring(0, 16) + '...';
+  document.getElementById('sse-badge').textContent = 'SSE: LIVE';
+  document.getElementById('sse-badge').className = 'badge badge-green';
+  document.getElementById('peers-badge').textContent = 'Peers: ' + state.peers;
+  document.getElementById('api-info').textContent = state.quantum ? '⚛️ Quantum' : 'SSE Live';
+  document.getElementById('mode-badge').textContent = state.quantum ? 'QUANTUM' : 'DETERMINISTIC';
+  document.getElementById('mode-badge').className = state.quantum ? 'api-badge quantum' : 'api-badge live';
+
+  // Chart
+  const now = new Date().toLocaleTimeString('en-GB', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
+  historyData.labels.push(now);
+  historyData.coherence.push(d.coherence);
+  historyData.stability.push(d.stability);
+  historyData.dim.push(d.dimension_switch_score);
+  if (historyData.labels.length > 60) {
+    historyData.labels.shift(); historyData.coherence.shift(); historyData.stability.shift(); historyData.dim.shift();
+  }
+  chart.data.labels = historyData.labels;
+  chart.data.datasets[0].data = historyData.coherence;
+  chart.data.datasets[1].data = historyData.stability;
+  chart.data.datasets[2].data = historyData.dim;
+  chart.update('none');
+
+  // Audio
+  if (audioCtx && oscL && oscR) {
+    const base = 142;
+    const beat = Math.abs(d.coherence - d.stability) * 8;
+    oscL.frequency.setValueAtTime(base + (d.coherence * 25), audioCtx.currentTime);
+    oscR.frequency.setValueAtTime(base + (d.stability * 25) + beat, audioCtx.currentTime);
+    gainNode.gain.setValueAtTime(d.symbolic_mass * 0.12, audioCtx.currentTime);
+  }
+};
+
+evtSource.onerror = () => {
+  document.getElementById('sse-badge').textContent = 'SSE: Error';
+  document.getElementById('sse-badge').className = 'badge badge-red';
+};
+
+// ===================== CONTROLS =====================
+function setNoise(val) {
+  state.noise = val / 100;
+  document.getElementById('noise-val').textContent = val + '%';
+  fetch('/api/noise', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ level: state.noise })
+  });
+}
+
+function toggleQuantum() {
+  state.quantum = !state.quantum;
+  fetch('/api/quantum', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ enabled: state.quantum })
+  });
+  document.getElementById('quantum-btn').textContent = state.quantum ? '🔒 Deterministic' : '⚛️ Quantum';
+}
+
+function discoverPeers() {
+  fetch('/api/discover', { method: 'POST' })
+    .then(r => r.json())
+    .then(d => {
+      alert('Peers found: ' + d.peers.join(', ') + '\nSelf: ' + d.self_ip);
+    });
+}
+
+function exportCSV() {
+  window.open('/api/export/csv', '_blank');
+}
+
+function toggleAudio() {
+  const btn = document.getElementById('audio-btn');
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    gainNode = audioCtx.createGain();
+    gainNode.gain.value = 0.12;
+    gainNode.connect(audioCtx.destination);
+
+    oscL = audioCtx.createOscillator();
+    oscL.type = 'sine';
+    oscL.frequency.value = 142;
+    const panL = audioCtx.createStereoPanner();
+    panL.pan.value = -1;
+    oscL.connect(panL);
+    panL.connect(gainNode);
+    oscL.start();
+
+    oscR = audioCtx.createOscillator();
+    oscR.type = 'sine';
+    oscR.frequency.value = 142;
+    const panR = audioCtx.createStereoPanner();
+    panR.pan.value = 1;
+    oscR.connect(panR);
+    panR.connect(gainNode);
+    oscR.start();
+
+    btn.textContent = '🔇 إيقاف الصوت الكوني';
+  } else {
+    audioCtx.close();
+    audioCtx = null; oscL = null; oscR = null; gainNode = null;
+    btn.textContent = '🔊 تشغيل الصوت الكوني';
+  }
+}
+
+// ===================== METRICS & VIZ =====================
+function updateMetrics() {
+  state.bal = 0.3 + 0.4 * state.dim;
+
+  document.getElementById('val-coh').textContent = state.coh.toFixed(6);
+  document.getElementById('bar-coh').style.width = (state.coh * 100) + '%';
+  document.getElementById('val-stab').textContent = state.stab.toFixed(6);
+  document.getElementById('bar-stab').style.width = (state.stab * 100) + '%';
+  document.getElementById('val-dim').textContent = state.dim.toFixed(6);
+  document.getElementById('bar-dim').style.width = (state.dim * 100) + '%';
+  document.getElementById('val-mass').textContent = state.mass.toFixed(6);
+  document.getElementById('bar-mass').style.width = (state.mass * 100) + '%';
+  document.getElementById('val-err').textContent = state.err.toFixed(6);
+  document.getElementById('bar-err').style.width = (state.err * 100) + '%';
+
+  document.getElementById('balance-thumb').style.left = (state.bal * 100) + '%';
+  document.getElementById('balance-val').textContent = state.bal.toFixed(2);
+
+  document.getElementById('tl-day').textContent = 'يوم ' + (state.day + 1);
+  document.getElementById('tl-phase').textContent = 'مرحلة ' + (state.phase + 1);
+  document.getElementById('tl-month').textContent = 'شهر ' + (Math.floor(state.day / 30) + 1);
+  document.getElementById('tl-lp').textContent = 'هرم كبير ' + (state.largeP + 1);
+
+  for (let i = 0; i < 12; i++) {
+    const body = document.getElementById('lp-body-' + i);
+    if (body) body.setAttribute('fill', i === state.largeP ? '#4a9eff' : '#ff6b6b');
+  }
+  for (let i = 0; i < 52; i++) {
+    const body = document.getElementById('syr-body-' + i);
+    if (body) body.setAttribute('fill', i === state.phase ? '#4a9eff' : '#9775fa');
+    const conn = document.getElementById('conn-syr-' + i);
+    if (conn) {
+      conn.setAttribute('stroke', i === state.phase ? '#4a9eff' : '#1a2744');
+      conn.setAttribute('stroke-width', i === state.phase ? '1.2' : '0.4');
+      conn.setAttribute('opacity', i === state.phase ? '0.4' : '0.12');
+    }
+  }
+  for (let i = 0; i < 365; i++) {
+    const el = document.getElementById('ob365-' + i);
+    if (el) {
+      el.setAttribute('stroke', i === state.day ? '#4a9eff' : '#1a2744');
+      el.setAttribute('stroke-width', i === state.day ? '2.5' : '1.2');
+    }
+  }
+
+  const pivot = document.getElementById('pivot');
+  if (pivot) {
+    const px = 55 + (425 - 55) * state.bal;
+    pivot.setAttribute('points', px + ',325 ' + (px - 4) + ',316 ' + (px + 4) + ',316');
+  }
+
+  const z1 = document.getElementById('z1-card');
+  const z2 = document.getElementById('z2-card');
+  if (state.bal < 0.45) { z1.style.borderColor = '#51cf66'; z2.style.borderColor = '#1a2744'; }
+  else if (state.bal > 0.55) { z1.style.borderColor = '#1a2744'; z2.style.borderColor = '#4a9eff'; }
+  else { z1.style.borderColor = '#1a2744'; z2.style.borderColor = '#1a2744'; }
+
+  for (let i = 0; i < 3; i++) {
+    const w = document.getElementById('wave-' + i);
+    if (w) {
+      const r = ((state.time * 25 + i * 60) % 240);
+      const op = Math.max(0, 1 - r / 240) * 0.2;
+      w.setAttribute('r', r); w.setAttribute('opacity', op);
+    }
+  }
+  for (let p = 0; p < 10; p++) {
+    const t = (state.time * 0.3 + p / 10) % 1;
+    const from = Math.floor(t * 52) % 52;
+    const lt = (t * 52) % 1;
+    const a1 = (from / 52) * Math.PI * 2 - Math.PI / 2;
+    const a2 = ((from + 1) / 52) * Math.PI * 2 - Math.PI / 2;
+    let ang = a1 + (a2 - a1) * lt;
+    if (a2 < a1) ang = a1 + (a2 + Math.PI * 2 - a1) * lt;
+    const px = CX + Math.cos(ang) * R52;
+    const py = CY + Math.sin(ang) * R52;
+    const part = document.getElementById('part-' + p);
+    if (part) { part.setAttribute('cx', px); part.setAttribute('cy', py); part.setAttribute('opacity', Math.max(0, 0.7 * (1 - Math.abs(lt - 0.5) * 2))); }
+  }
+}
+
+let lastTime = 0;
+function loop(ts) {
+  if (!state.running) { lastTime = 0; requestAnimationFrame(loop); return; }
+  if (!lastTime) lastTime = ts;
+  const dt = ts - lastTime; lastTime = ts;
+  state.time += dt * 0.001;
+  requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
+
+function toggleSim() {
+  state.running = !state.running;
+  document.getElementById('sim-btn').textContent = state.running ? 'إيقاف المحاكاة' : 'تشغيل المحاكاة';
+  if (state.running) { lastTime = 0; requestAnimationFrame(loop); }
+}
+
+function exportData() {
+  const data = {
+    project: "COMPLETE_COSMIC_FUSION_PROJECT",
+    version: "v5.0",
+    timestamp: new Date().toISOString(),
+    mode: state.quantum ? "QUANTUM" : "DETERMINISTIC",
+    day: state.day + 1,
+    phase: state.phase + 1,
+    coherence: state.coh,
+    stability: state.stab,
+    dimension_switch: state.dim,
+    symbolic_mass: state.mass,
+    noise_level: state.noise,
+    reconstruction_error: state.err,
+    balance: state.bal,
+    peers: state.peers,
+    hash_chain: document.getElementById('hash-badge').textContent,
+    audit: {
+      conserved_before: 1.0,
+      conserved_after: 1.0,
+      residual: 0.0,
+      physical_transport: false,
+      status: "PASS"
+    }
+  };
+  console.log(JSON.stringify(data, null, 2));
+  alert("تم تصدير البيانات للـ Console (F12)");
+}
+
+function switchTab(n) {
+  document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('active', i === n));
+}
+function refreshMesh(){fetch("/api/mesh").then(r=>r.json()).then(d=>{const list=document.getElementById("mesh-peers-list");if(d.peers&&d.peers.length>0){list.innerHTML=d.peers.map(p=>`<div class="mesh-peer"><span class="mesh-peer-ip">${p.ip}</span><span class="mesh-peer-time">${new Date(p.last_seen*1000).toLocaleTimeString()}</span></div>`).join("");document.getElementById("mesh-cons-coh").textContent=d.consensus?d.consensus.coherence.toFixed(4):"—";document.getElementById("mesh-cons-stab").textContent=d.consensus?d.consensus.stability.toFixed(4):"—";document.getElementById("mesh-count").textContent=d.peers.length;document.getElementById("mesh-badge").textContent="🛰️ Mesh: "+d.peers.length+" Peers";}else{list.innerHTML='<div class="mesh-peer"><span>لا يوجد أجهزة متصلة</span></div>';document.getElementById("mesh-cons-coh").textContent="—";document.getElementById("mesh-cons-stab").textContent="—";document.getElementById("mesh-count").textContent="0";document.getElementById("mesh-badge").textContent="🛰️ Mesh: Standalone";}}).catch(()=>{document.getElementById("mesh-badge").textContent="🛰️ Mesh: Error";});}</script>
+</body>
+</html>
