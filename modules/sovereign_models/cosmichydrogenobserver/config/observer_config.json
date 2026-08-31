@@ -1,0 +1,12 @@
+{
+  "frequency_ghz": 1.420405751,
+  "bandwidth_mhz": 2.4,
+  "sample_rate": 2.4e6,
+  "fft_size": 1024,
+  "integration_time_sec": 10,
+  "noise_floor_db": -80,
+  "gain_db": 40,
+  "rtl_sdr_enabled": false,
+  "simulation_mode": true,
+  "output_format": "uca_cosmic_state"
+}

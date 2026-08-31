@@ -1,0 +1,10 @@
+{
+  "hash_algorithm": "SHA-256",
+  "chain_type": "tamper_evident_linked_list",
+  "genesis_mode": "deterministic",
+  "max_blocks": 100000,
+  "verification_interval": 1,
+  "merkle_tree": true,
+  "integration": "UCA_Cosmic_Fusion_v5.0",
+  "output_format": "uca_cosmic_state"
+}

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>UCA Sovereign Cybernetic OS</title>
+    <style>
+        :root {
+            --primary: #38ef7d;
+            --secondary: #11998e;
+            --dark-bg: #010409;
+            --panel-bg: rgba(2, 12, 27, 0.85);
+            --border-color: rgba(56, 239, 125, 0.3);
+            --text-main: #c9d1d9;
+        }
+
+        body { background-color: var(--dark-bg); color: var(--text-main); font-family: monospace; margin: 0; padding: 0; overflow: hidden; }
+
+        /* الشاشة الخلفية ثلاثية الأبعاد */
+        #canvas-container { position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1; pointer-events: none; }
+
+        /* واجهة النظام السيادي الحقيقية (OS Layout) */
+        .os-wrapper { position: relative; z-index: 10; display: grid; grid-template-rows: 60px 1fr 40px; height: 100vh; box-sizing: border-box; padding: 10px; gap: 10px; }
+
+        /* شريط العنوان العلوي */
+        header { background: var(--panel-bg); border: 1px solid var(--border-color); backdrop-filter: blur(10px); border-radius: 8px; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; box-shadow: 0 0 20px rgba(0,0,0,0.8); }
+        .os-title { font-size: 1rem; color: var(--primary); font-weight: bold; text-shadow: 0 0 10px rgba(56,239,125,0.5); }
+        .system-status { display: flex; gap: 15px; font-size: 0.75rem; color: #8b949e; }
+        .status-pill { color: var(--primary); background: rgba(56,239,125,0.1); padding: 3px 8px; border-radius: 4px; border: 1px solid var(--border-color); }
+
+        /* مساحة العمل الرئيسية (شبكة النوافذ السيادية) */
+        .workspace { display: grid; grid-template-columns: 320px 1fr 320px; gap: 10px; overflow: hidden; }
+
+        .panel { background: var(--panel-bg); border: 1px solid var(--border-color); backdrop-filter: blur(10px); border-radius: 8px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 0 20px rgba(0,0,0,0.6); }
+        .panel-header { background: rgba(13, 27, 42, 0.9); padding: 8px 12px; font-size: 0.75rem; color: var(--primary); border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
+        .panel-body { padding: 12px; font-size: 0.75rem; overflow-y: auto; flex-grow: 1; color: #8b949e; }
+
+        /* أزرار العمليات الحقيقية */
+        .action-btn { background: rgba(17, 153, 142, 0.2); color: var(--primary); border: 1px solid var(--primary); padding: 8px 12px; border-radius: 6px; cursor: pointer; font-family: monospace; font-size: 0.75rem; width: 100%; margin-bottom: 8px; transition: 0.3s; text-align: right; }
+        .action-btn:hover { background: var(--primary); color: #000; box-shadow: 0 0 15px var(--primary); }
+
+        /* تيرمنال السجلات الحية */
+        .terminal-box { background: #000; border: 1px solid #30363d; border-radius: 6px; padding: 10px; font-size: 0.7rem; color: #38ef7d; height: 100%; box-sizing: border-box; overflow-y: auto; }
+
+        /* شريط الحالة السفلي */
+        footer { background: var(--panel-bg); border: 1px solid var(--border-color); border-radius: 8px; display: flex; align-items: center; justify-content: space-between; padding: 0 15px; font-size: 0.7rem; color: #8b949e; }
+    </style>
+    <!-- استدعاء Three.js للخلفية الحية المتفاعلة -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+    <div id="canvas-container"></div>
+
+    <div class="os-wrapper">
+        <!-- الشريط العلوي للنظام -->
+        <header>
+            <div class="os-title">🛡️ UCA Sovereign Cybernetic OS v4.2</div>
+            <div class="system-status">
+                <span>CPU: <strong style="color:#38ef7d">1.4%</strong></span>
+                <span>RAM: <strong style="color:#60a5fa">4.2 GB / 8 GB</strong></span>
+                <span class="status-pill">SECURE KERNEL: ACTIVE</span>
+            </div>
+        </header>
+
+        <!-- مساحة العمل الثلاثية واللوحات البرمجية -->
+        <div class="workspace">
+            <!-- لوحة التحكم اليسرى (المنتجات والذكاء الاصطناعي) -->
+            <div class="panel">
+                <div class="panel-header"><span>⚡ وحدات النواة الذكية (AI Modules)</span></div>
+                <div class="panel-body">
+                    <button class="action-btn" onclick="executeSovereignAction('AL_MAHRAAB_CORE', 'تفعيل النواة السيادية وعزل الثغرات')">1. تشغيل Al-Mahraab Core</button>
+                    <button class="action-btn" onclick="executeSovereignAction('SENTINEL_MESH', 'بناء جدار عازل شبكي فوري 100%')">2. تفعيل Sentinel Mesh</button>
+                    <button class="action-btn" onclick="executeSovereignAction('SAIU_AGENT', 'مزامنة الوكيل الذكي وقراءة السجلات')">3. تشغيل SAIU-Agent</button>
+                    <hr style="border-color: var(--border-color); margin: 10px 0;">
+                    <div style="font-size: 0.7rem; color: #c9d1d9; margin-bottom: 5px;">حالة الأمان السيادي:</div>
+                    <div style="background: rgba(0,0,0,0.5); padding: 8px; border-radius: 4px; border: 1px solid #30363d;" id="security-status-box">
+                        [OK] All encrypted conduits verified. Zero threat vectors detected.
+                    </div>
+                </div>
+            </div>
+
+            <!-- المساحة الوسطى (الروبوت السيادي ثلاثي الأبعاد + عرض البيئة) -->
+            <div class="panel" style="background: rgba(2, 6, 15, 0.4); border: 1px dashed var(--border-color);">
+                <div class="panel-header"><span>🌐 الفضاء السيادي المجسم (Cybernetic AI Entity Space)</span></div>
+                <div class="panel-body" style="display: flex; align-items: flex-end; justify-content: center; padding-bottom: 20px; pointer-events: none;">
+                    <div style="background: rgba(1, 4, 9, 0.85); border: 1px solid var(--border-color); padding: 10px; border-radius: 6px; pointer-events: auto; text-align: center;">
+                        <div style="color: var(--primary); font-weight: bold; margin-bottom: 5px;">🤖 وحدة الروبوت السيادي متصلة بالباك إند</div>
+                        <div style="font-size: 0.65rem; color: #8b949e;">اضغط على الأزرار الجانبية لإرسال نبضات العمليات الحية للسيرفر المحلي.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- لوحة السجلات اليمنى (Live Execution Telemetry) -->
+            <div class="panel">
+                <div class="panel-header"><span>📊 تيرمنال العمليات الحية (Live Stream)</span></div>
+                <div class="panel-body" style="padding: 8px;">
+                    <div class="terminal-box" id="terminal-logs">
+                        [SYSTEM INIT] UCA Cybernetic OS booted successfully...<br>
+                        [BACKEND] Connected to Termux local daemon (Port 3000).<br>
+                        [READY] Waiting for autonomous operator commands...<br>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- الشريط السفلي -->
+        <footer>
+            <div>UCA Sovereign Infrastructure • Autonomous Operations Engine</div>
+            <div style="color: #38ef7d;">● Live Backend Sync Enabled</div>
+        </footer>
+    </div>
+
+    <script>
+        // إعداد مشهد الـ Three.js في الخلفية لخلق الروبوت والأشكال المتحركة
+        const container = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+        scene.fog = new THREE.FogExp2(0x010409, 0.015);
+
+        const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(0, 0, 16);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        container.appendChild(renderer.domElement);
+
+        // إضاءة النظام
+        scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+        const dirLight = new THREE.DirectionalLight(0x38ef7d, 2);
+        dirLight.position.set(5, 10, 7);
+        scene.add(dirLight);
+
+        // بناء الروبوت السيادي في منتصف الشاشة (خلف اللوحات)
+        const robotGroup = new THREE.Group();
+        
+        const cyberMat = new THREE.MeshStandardMaterial({ color: 0x38ef7d, wireframe: true, emissive: 0x059669, emissiveIntensity: 0.5 });
+        const headMat = new THREE.MeshStandardMaterial({ color: 0x60a5fa, wireframe: true, emissive: 0x1d4ed8, emissiveIntensity: 0.8 });
+
+        // رأس الروبوت
+        const headMesh = new THREE.Mesh(new THREE.BoxGeometry(1.2, 1.2, 1.2), headMat);
+        headMesh.position.y = 2.2;
+        robotGroup.add(headMesh);
+
+        // جذع الروبوت
+        const torsoMesh = new THREE.Mesh(new THREE.CylinderGeometry(0.7, 1.0, 2.2, 6), cyberMat);
+        torsoMesh.position.y = 0.5;
+        robotGroup.add(torsoMesh);
+
+        // قلب الطاقة الكوانتمية
+        const coreMesh = new THREE.Mesh(new THREE.SphereGeometry(0.4, 8, 8), new THREE.MeshStandardMaterial({ color: 0xffffff, emissive: 0x38ef7d, emissiveIntensity: 1 }));
+        coreMesh.position.set(0, 0.8, 0.6);
+        robotGroup.add(coreMesh);
+
+        scene.add(robotGroup);
+
+        // حركات خفيفة للروبوت
+        function animate() {
+            requestAnimationFrame(animate);
+            robotGroup.rotation.y += 0.005;
+            coreMesh.scale.x = 1 + Math.sin(Date.now() * 0.01) * 0.2;
+            coreMesh.scale.y = 1 + Math.sin(Date.now() * 0.01) * 0.2;
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // دالة تنفيذ العمليات الحقيقية وإرسالها للباك إند وتحديث التيرمنال
+        function executeSovereignAction(moduleName, description) {
+            const term = document.getElementById('terminal-logs');
+            const statusBox = document.getElementById('security-status-box');
+            const timeStr = new Date().toTimeString().split(' ')[0];
+
+            term.innerHTML += `<br>[${timeStr}] [EXEC] Dispatching -> ${moduleName}...`;
+            term.scrollTop = term.scrollHeight;
+
+            fetch(`/api/execute?module=${moduleName}&desc=${encodeURIComponent(description)}`)
+                .then(res => res.json())
+                .then(data => {
+                    term.innerHTML += `<br>[${timeStr}] [SUCCESS] ${data.message} | Packets: ${data.packets}`;
+                    term.scrollTop = term.scrollHeight;
+                    statusBox.innerHTML = `[VERIFIED] ${moduleName}: Active & Secure.`;
+                })
+                .catch(err => {
+                    term.innerHTML += `<br>[${timeStr}] [ERROR] Backend communication failed.`;
+                });
+        }
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>

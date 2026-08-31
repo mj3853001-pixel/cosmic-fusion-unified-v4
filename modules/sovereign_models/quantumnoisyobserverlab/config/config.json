@@ -1,0 +1,10 @@
+{
+  "dimensions": 4,
+  "hbar": 1.054571817e-34,
+  "interpretations": ["copenhagen", "many_worlds"],
+  "default_interpretation": "copenhagen",
+  "noise_model": "gaussian_decoherence",
+  "max_branches": 1000,
+  "integration": "UCA_Cosmic_Fusion_v5.0_PROJ002",
+  "output_format": "uca_cosmic_state"
+}

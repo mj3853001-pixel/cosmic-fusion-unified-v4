@@ -21,7 +21,6 @@
 
 **UCA Cosmic Fusion v4.2** is a sovereign computational cosmology engine running natively on Android via Termux. It unifies a real-time deterministic simulation core with a holographic dashboard — all served from a single Python stdlib process on a single port.
 
-> *"We do not build models of the universe. We build languages that the universe understands."*
 
 ### What Makes It Different
 
@@ -43,7 +42,6 @@ Unlike traditional dashboards or physics toys, this system is a **working formal
 
 **المشروع الكوني المتكامل — النظام الموحد v4.2** هو محرك حسابي كوني سيادي يعمل بشكل أصلي على Android عبر Termux. يوحد المحرك الحاسوبي الحي مع لوحة معلومات هولوغرافية — الكل من عملية Python واحدة على منفذ واحد.
 
-> *"نحن لا نبني نماذج للكون. نحن نبني لغات يفهمها الكون."*
 
 ### ما الذي يميزه؟
 

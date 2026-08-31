@@ -1,0 +1,10 @@
+{
+  "max_papers": 10000,
+  "reviewers_per_paper": 3,
+  "acceptance_threshold": 0.6,
+  "equation_patterns": ["physics", "cosmology", "quantum"],
+  "citation_depth": 3,
+  "impact_formula": "h_index_inspired",
+  "integration": "UCA_Cosmic_Fusion_v5.0",
+  "output_format": "uca_cosmic_state"
+}

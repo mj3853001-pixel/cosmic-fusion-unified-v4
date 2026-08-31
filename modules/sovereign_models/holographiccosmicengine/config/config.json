@@ -1,0 +1,11 @@
+{
+  "ads_radius": 1.0,
+  "boundary_dimension": 2,
+  "bulk_dimension": 3,
+  "boundary_nodes": 256,
+  "newton_g": 6.674e-11,
+  "entropy_formula": "bekenstein_hawking",
+  "minimal_surface": "ryu_takayanagi",
+  "integration": "UCA_Cosmic_Fusion_v5.0",
+  "output_format": "uca_cosmic_state"
+}

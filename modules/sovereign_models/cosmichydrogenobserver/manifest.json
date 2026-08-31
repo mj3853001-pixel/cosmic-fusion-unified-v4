@@ -1,0 +1,8 @@
+{
+  "model_name": "CosmicHydrogenObserver",
+  "architectural_domain": "Radio Astronomy Signal Processing at 1.42 GHz Hydrogen Line with RTL-SDR Integration and Epoch of Reionization Simulation",
+  "model_id": "04bde719-bdcf-4d8b-b1dc-e9d1b70416ca",
+  "classification": "Sovereign Architectural Prototype",
+  "standard": "UKIS v3 / Zero-Heap Spatial Deterministic",
+  "version": "1.0.0"
+}
