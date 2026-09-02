@@ -5,7 +5,7 @@
   <filter id="nodeglow"><feDropShadow dx="0" dy="0" stdDeviation="2" flood-color="#00aaff" flood-opacity="0.5"/></filter>
 </defs>
 <rect width="720" height="320" rx="8" fill="url(#tbg)" stroke="#21262d" stroke-width="2" filter="url(#tglow)"/>
-<text x="360" y="28" fill="#00ff88" font-family="SF Mono,JetBrains Mono,monospace" font-size="14" font-weight="bold" text-anchor="middle" letter-spacing="2">📡 LIVE MESH TELEMETRY — 05:35:43 UTC</text>
+<text x="360" y="28" fill="#00ff88" font-family="SF Mono,JetBrains Mono,monospace" font-size="14" font-weight="bold" text-anchor="middle" letter-spacing="2">📡 LIVE MESH TELEMETRY — 09:51:58 UTC</text>
 <text x="360" y="50" fill="#ffd700" font-family="monospace" font-size="11" text-anchor="middle">PULSE STATE: SYNCING | NODES: 5 | PROTOCOL: UDP:9090</text>
 <line x1="20" y1="62" x2="700" y2="62" stroke="#21262d" stroke-width="1"/>
 <rect x="20" y="85" width="680" height="42" rx="5" fill="#161b22" stroke="#30363d" stroke-width="1"/>
@@ -13,41 +13,41 @@
 <text x="60" y="111" fill="#ffd700" font-family="monospace" font-size="11" font-weight="bold" text-anchor="middle">ALPHA</text>
 <text x="110" y="111" fill="#8b949e" font-family="monospace" font-size="10" text-anchor="start">MASTER</text>
 <rect x="200" y="99" width="200" height="14" rx="3" fill="#0d1117" stroke="#30363d" stroke-width="0.5"/>
-<rect x="200" y="99" width="70" height="14" rx="3" fill="#00ff88" opacity="0.8"/>
-<text x="410" y="110" fill="#00ff88" font-family="monospace" font-size="9" text-anchor="start">LOAD 35%</text>
+<rect x="200" y="99" width="62" height="14" rx="3" fill="#00ff88" opacity="0.8"/>
+<text x="410" y="110" fill="#00ff88" font-family="monospace" font-size="9" text-anchor="start">LOAD 31%</text>
 <rect x="480" y="99" width="150" height="14" rx="3" fill="#0d1117" stroke="#30363d" stroke-width="0.5"/>
-<rect x="480" y="99" width="147.0" height="14" rx="3" fill="#00ff88" opacity="0.8"/>
-<text x="640" y="110" fill="#00ff88" font-family="monospace" font-size="9" text-anchor="start">SYNC 98%</text>
+<rect x="480" y="99" width="142.5" height="14" rx="3" fill="#00ff88" opacity="0.8"/>
+<text x="640" y="110" fill="#00ff88" font-family="monospace" font-size="9" text-anchor="start">SYNC 95%</text>
 <line x1="60" y1="127" x2="60" y2="135" stroke="#30363d" stroke-width="1" stroke-dasharray="3,3"/>
 <rect x="20" y="135" width="680" height="42" rx="5" fill="#161b22" stroke="#30363d" stroke-width="1"/>
 <rect x="25" y="143" width="70" height="26" rx="4" fill="#0d1117" stroke="#c9d1d9" stroke-width="1.5"/>
 <text x="60" y="161" fill="#c9d1d9" font-family="monospace" font-size="11" font-weight="bold" text-anchor="middle">BETA</text>
 <text x="110" y="161" fill="#8b949e" font-family="monospace" font-size="10" text-anchor="start">MESH</text>
 <rect x="200" y="149" width="200" height="14" rx="3" fill="#0d1117" stroke="#30363d" stroke-width="0.5"/>
-<rect x="200" y="149" width="54" height="14" rx="3" fill="#00ff88" opacity="0.8"/>
-<text x="410" y="160" fill="#00ff88" font-family="monospace" font-size="9" text-anchor="start">LOAD 27%</text>
+<rect x="200" y="149" width="32" height="14" rx="3" fill="#00ff88" opacity="0.8"/>
+<text x="410" y="160" fill="#00ff88" font-family="monospace" font-size="9" text-anchor="start">LOAD 16%</text>
 <rect x="480" y="149" width="150" height="14" rx="3" fill="#0d1117" stroke="#30363d" stroke-width="0.5"/>
-<rect x="480" y="149" width="147.0" height="14" rx="3" fill="#00ff88" opacity="0.8"/>
-<text x="640" y="160" fill="#00ff88" font-family="monospace" font-size="9" text-anchor="start">SYNC 98%</text>
+<rect x="480" y="149" width="132.0" height="14" rx="3" fill="#ffaa00" opacity="0.8"/>
+<text x="640" y="160" fill="#ffaa00" font-family="monospace" font-size="9" text-anchor="start">SYNC 88%</text>
 <line x1="60" y1="177" x2="60" y2="185" stroke="#30363d" stroke-width="1" stroke-dasharray="3,3"/>
 <rect x="20" y="185" width="680" height="42" rx="5" fill="#161b22" stroke="#30363d" stroke-width="1"/>
 <rect x="25" y="193" width="70" height="26" rx="4" fill="#0d1117" stroke="#c9d1d9" stroke-width="1.5"/>
 <text x="60" y="211" fill="#c9d1d9" font-family="monospace" font-size="11" font-weight="bold" text-anchor="middle">GAMMA</text>
 <text x="110" y="211" fill="#8b949e" font-family="monospace" font-size="10" text-anchor="start">MESH</text>
 <rect x="200" y="199" width="200" height="14" rx="3" fill="#0d1117" stroke="#30363d" stroke-width="0.5"/>
-<rect x="200" y="199" width="92" height="14" rx="3" fill="#00ff88" opacity="0.8"/>
-<text x="410" y="210" fill="#00ff88" font-family="monospace" font-size="9" text-anchor="start">LOAD 46%</text>
+<rect x="200" y="199" width="86" height="14" rx="3" fill="#00ff88" opacity="0.8"/>
+<text x="410" y="210" fill="#00ff88" font-family="monospace" font-size="9" text-anchor="start">LOAD 43%</text>
 <rect x="480" y="199" width="150" height="14" rx="3" fill="#0d1117" stroke="#30363d" stroke-width="0.5"/>
-<rect x="480" y="199" width="141.0" height="14" rx="3" fill="#00ff88" opacity="0.8"/>
-<text x="640" y="210" fill="#00ff88" font-family="monospace" font-size="9" text-anchor="start">SYNC 94%</text>
+<rect x="480" y="199" width="142.5" height="14" rx="3" fill="#00ff88" opacity="0.8"/>
+<text x="640" y="210" fill="#00ff88" font-family="monospace" font-size="9" text-anchor="start">SYNC 95%</text>
 <line x1="60" y1="227" x2="60" y2="235" stroke="#30363d" stroke-width="1" stroke-dasharray="3,3"/>
 <rect x="20" y="235" width="680" height="42" rx="5" fill="#161b22" stroke="#30363d" stroke-width="1"/>
 <rect x="25" y="243" width="70" height="26" rx="4" fill="#0d1117" stroke="#c9d1d9" stroke-width="1.5"/>
 <text x="60" y="261" fill="#c9d1d9" font-family="monospace" font-size="11" font-weight="bold" text-anchor="middle">DELTA</text>
 <text x="110" y="261" fill="#8b949e" font-family="monospace" font-size="10" text-anchor="start">OBSERVER</text>
 <rect x="200" y="249" width="200" height="14" rx="3" fill="#0d1117" stroke="#30363d" stroke-width="0.5"/>
-<rect x="200" y="249" width="46" height="14" rx="3" fill="#00ff88" opacity="0.8"/>
-<text x="410" y="260" fill="#00ff88" font-family="monospace" font-size="9" text-anchor="start">LOAD 23%</text>
+<rect x="200" y="249" width="38" height="14" rx="3" fill="#00ff88" opacity="0.8"/>
+<text x="410" y="260" fill="#00ff88" font-family="monospace" font-size="9" text-anchor="start">LOAD 19%</text>
 <rect x="480" y="249" width="150" height="14" rx="3" fill="#0d1117" stroke="#30363d" stroke-width="0.5"/>
 <rect x="480" y="249" width="133.5" height="14" rx="3" fill="#ffaa00" opacity="0.8"/>
 <text x="640" y="260" fill="#ffaa00" font-family="monospace" font-size="9" text-anchor="start">SYNC 89%</text>
@@ -57,10 +57,10 @@
 <text x="60" y="311" fill="#00aaff" font-family="monospace" font-size="11" font-weight="bold" text-anchor="middle">OMEGA</text>
 <text x="110" y="311" fill="#8b949e" font-family="monospace" font-size="10" text-anchor="start">KERNEL</text>
 <rect x="200" y="299" width="200" height="14" rx="3" fill="#0d1117" stroke="#30363d" stroke-width="0.5"/>
-<rect x="200" y="299" width="144" height="14" rx="3" fill="#ff4444" opacity="0.8"/>
-<text x="410" y="310" fill="#ff4444" font-family="monospace" font-size="9" text-anchor="start">LOAD 72%</text>
+<rect x="200" y="299" width="112" height="14" rx="3" fill="#ffaa00" opacity="0.8"/>
+<text x="410" y="310" fill="#ffaa00" font-family="monospace" font-size="9" text-anchor="start">LOAD 56%</text>
 <rect x="480" y="299" width="150" height="14" rx="3" fill="#0d1117" stroke="#30363d" stroke-width="0.5"/>
-<rect x="480" y="299" width="147.0" height="14" rx="3" fill="#00ff88" opacity="0.8"/>
-<text x="640" y="310" fill="#00ff88" font-family="monospace" font-size="9" text-anchor="start">SYNC 98%</text>
+<rect x="480" y="299" width="150.0" height="14" rx="3" fill="#00ff88" opacity="0.8"/>
+<text x="640" y="310" fill="#00ff88" font-family="monospace" font-size="9" text-anchor="start">SYNC 100%</text>
 <text x="360" y="345" fill="#484f58" font-family="monospace" font-size="9" text-anchor="middle">SOVEREIGN MESH CONSENSUS — NO CLOUD · NO DNS · NO EXTERNAL APIs</text>
 </svg>
