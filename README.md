@@ -1,3 +1,14 @@
+---
+license: sosl
+tags:
+- sovereign-ai
+- physics
+- quantum
+- rust
+- edge-computing
+- zero-dependency
+---
+
 <!-- UCA Cosmic Fusion v5.2 — Sovereign Edition -->
 <!-- 100% Self-Contained. No external image dependencies. -->
 
