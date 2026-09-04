@@ -1,5 +1,5 @@
 ---
-license: sosl
+license: other
 tags:
 - sovereign-ai
 - physics
