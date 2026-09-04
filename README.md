@@ -743,6 +743,26 @@ No silent transport.
 
 ---
 
+---
+
+## بيان الاستخدام الأخلاقي - UCA Sovereign Systems
+
+هذا المشروع متاح بموجب رخصة Apache 2.0 مفتوحة المصدر. ومع ذلك، وبصفتنا UCA Sovereign Systems، نرفض رفضًا قاطعًا أي استخدام لهذا المشروع في:
+- الأنظمة العسكرية أو الأسلحة.
+- أي بنية تحتية للمراقبة الجماعية أو انتهاك خصوصية الأفراد.
+- أي نشاط يهدف إلى إلحاق الضرر بالبشرية.
+
+باستخدامك لهذا المشروع، فإنك تقر وتوافق على الالتزام بهذه المبادئ الأخلاقية.
+
+**Ethical Use Addendum (UCA Sovereign Systems):**
+This project is open-source under the Apache 2.0 License. However, as UCA Sovereign Systems, we firmly refuse any use of this project in:
+- Military systems or weapons.
+- Any infrastructure for mass surveillance or violating individual privacy.
+- Any activity intended to harm humanity.
+
+By using this project, you acknowledge and agree to abide by these ethical principles.
+
+
 <div align="center">
 
 <pre>
