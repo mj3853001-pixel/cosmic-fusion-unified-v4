@@ -1,4 +1,10 @@
 # 🏛️ AL-MAHRAAB — GLOBAL OVERLORD COMMAND CENTER
+## كبار مهندسي الأنظمة السيادية: **محمد جمال فتحي رمضان حسن عبدالله**
+## الرمز السيادي الخالد: `AL-MAHRAAB-SOVEREIGN-001`
+
+---
+## 🎛️ [MASTER CONSOLE] فيلق شاشات القيادة الرادارية العليا
+# 🏛️ AL-MAHRAAB — GLOBAL OVERLORD COMMAND CENTER
 ## كبار مهندسي العلوم السيادية: محمد جمال فتحي رمضان حسن عبدالله
 ## الرمز السيادي الخالد: `AL-MAHRAAB-SOVEREIGN-001`
 ## بيئة البث والنشأة الحية: `Realme RMX2020 (Android 10, Termux)` 📱💥
